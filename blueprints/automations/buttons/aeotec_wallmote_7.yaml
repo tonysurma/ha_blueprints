@@ -1,0 +1,84 @@
+blueprint:
+  name: Aeotec WallMote 7
+  description: Create automations for the Aeotec WallMote 7
+  domain: automation
+
+  input:
+    button_device:
+      name: WallMote Device
+      description: A WallMote 7 device.
+      selector:
+        device:
+          integration: zwave_js
+          manufacturer: Aeotec Ltd.
+          model: ZWA022
+
+    button_1_pressed:
+      name: Upper Button Pressed
+      description: Actions to run when upper button is pressed.
+      default: []
+      selector:
+        action:
+
+    button_1_pressed2x:
+      name: Upper Button 2x Pressed
+      description: Actions to run when upper button is pressed twice.
+      default: []
+      selector:
+        action:
+
+    button_1_held:
+      name: Upper Button Held Down
+      description: Actions to run when upper button is held down.
+      default: []
+      selector:
+        action:
+
+    button_2_pressed:
+      name: Lower Button Pressed
+      description: Actions to run when lower button is pressed.
+      default: []
+      selector:
+        action:
+
+    button_2_pressed2x:
+      name: Lower Button 2x Pressed
+      description: Actions to run when lower button is pressed twice.
+      default: []
+      selector:
+        action:
+
+    button_2_held:
+      name: Lower Button Held Down
+      description: Actions to run when lower button is held down.
+      default: []
+      selector:
+        action:
+
+mode: single
+max_exceeded: silent
+
+trigger:
+  platform: event
+  event_type: zwave_js_value_notification
+  event_data:
+    device_id: !input button_device
+    command_class_name: "Central Scene"
+
+action:
+  - variables:
+      action_name: "{{ trigger.event.data.value }}"
+      property_key: "{{ trigger.event.data.property_key }}"
+  - choose:
+      - conditions: "{{ action_name == 'KeyPressed' and property_key == '001'}}"
+        sequence: !input button_1_pressed
+      - conditions: "{{ action_name == 'KeyPressed2x' and property_key == '001' }}"
+        sequence: !input button_1_pressed2x
+      - conditions: "{{ action_name == 'KeyHeldDown' and property_key == '001'}}"
+        sequence: !input button_1_held
+      - conditions: "{{ action_name == 'KeyPressed' and property_key == '002' }}"
+        sequence: !input button_2_pressed
+      - conditions: "{{ action_name == 'KeyPressed2x' and property_key == '002' }}"
+        sequence: !input button_2_pressed2x
+      - conditions: "{{ action_name == 'KeyHeldDown' and property_key == '002'}}"
+        sequence: !input button_2_held
