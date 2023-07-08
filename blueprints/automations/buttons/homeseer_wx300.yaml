@@ -27,6 +27,13 @@ blueprint:
       selector:
         action:
 
+    button_1_pressed3x:
+      name: Upper Button 3x Pressed
+      description: Actions to run when upper button is pressed three times.
+      default: []
+      selector:
+        action:
+
     button_1_held:
       name: Upper Button Held Down
       description: Actions to run when upper button is held down.
@@ -44,6 +51,13 @@ blueprint:
     button_2_pressed2x:
       name: Lower Button 2x Pressed
       description: Actions to run when lower button is pressed twice.
+      default: []
+      selector:
+        action:
+
+    button_2_pressed3x:
+      name: Lower Button 3x Pressed
+      description: Actions to run when lower button is pressed three times.
       default: []
       selector:
         action:
@@ -74,11 +88,15 @@ action:
         sequence: !input button_1_pressed
       - conditions: "{{ action_name == 'KeyPressed2x' and property_key == '001' }}"
         sequence: !input button_1_pressed2x
+      - conditions: "{{ action_name == 'KeyPressed3x' and property_key == '001' }}"
+        sequence: !input button_1_pressed3x
       - conditions: "{{ action_name == 'KeyHeldDown' and property_key == '001'}}"
         sequence: !input button_1_held
       - conditions: "{{ action_name == 'KeyPressed' and property_key == '002' }}"
         sequence: !input button_2_pressed
       - conditions: "{{ action_name == 'KeyPressed2x' and property_key == '002' }}"
         sequence: !input button_2_pressed2x
+      - conditions: "{{ action_name == 'KeyPressed3x' and property_key == '002' }}"
+        sequence: !input button_2_pressed3x
       - conditions: "{{ action_name == 'KeyHeldDown' and property_key == '002'}}"
         sequence: !input button_2_held
